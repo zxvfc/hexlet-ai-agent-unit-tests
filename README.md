@@ -38,7 +38,8 @@ Developer                   Feature Branch                       PR → GitHub A
 ├── src/
 │   ├── calculator.py                     # Calculator — partial test coverage
 │   ├── string_utils.py                   # String utilities — partial test coverage
-│   └── data_processor.py                 # NEW — no tests yet (intentional gap)
+│   ├── data_processor.py                 # NEW — no tests yet (intentional gap)
+│   └── geometry.py                       # NEW — no tests yet (intentional gap)
 ├── tests/
 │   ├── test_calculator.py                # Tests for add, subtract, multiply
 │   ├── test_string_utils.py              # Tests for reverse, capitalize_words
@@ -67,6 +68,11 @@ The following functions exist in `src/` but **lack unit tests** — the AI agent
 | `data_processor.py` | `sort_by_key` | ❌ |
 | `data_processor.py` | `aggregate_by_key` | ❌ |
 | `data_processor.py` | `merge_records` | ❌ |
+| `geometry.py` | `circle_area` | ❌ (whole module new) |
+| `geometry.py` | `circle_circumference` | ❌ |
+| `geometry.py` | `rectangle_area` | ❌ |
+| `geometry.py` | `rectangle_perimeter` | ❌ |
+| `geometry.py` | `triangle_area` | ❌ |
 
 ## Running Locally
 
