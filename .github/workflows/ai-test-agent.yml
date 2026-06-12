@@ -29,6 +29,7 @@ on:
 jobs:
   generate-tests:
     runs-on: ubuntu-latest
+    environment: demo
     permissions:
       contents: write
       pull-requests: write
@@ -57,9 +58,9 @@ jobs:
         env:
           # Set the provider API key your agent uses.
           # Change ANTHROPIC_API_KEY to match your provider.
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
-          pi -p "
+          pi --print --no-session --model big-pickle "
             You are in a GitHub Actions CI runner. The current checkout has:
 
             - src/    - Python source modules
