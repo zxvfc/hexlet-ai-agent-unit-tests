@@ -1,0 +1,103 @@
+# =============================================================================
+# AI Test Agent - Demo Workflow
+# =============================================================================
+#
+# Triggered on PRs to `main`. Runs the pi coding agent to:
+#   1. Analyse the diff and identify code with no test coverage.
+#   2. Generate pytest tests for uncovered functions.
+#   3. Commit and push the generated tests back to the PR branch.
+#
+# Prerequisites:
+#   - Node.js (for installing pi via npm)
+#   - A provider API key in GitHub Secrets (e.g. ANTHROPIC_API_KEY)
+#
+# Demo flow:
+#   1. Developer pushes implementation to `feature/*` branch.
+#   2. Developer opens a PR against `main`.
+#   3. This workflow runs.
+#   4. pi analyses the diff, writes missing tests, commits & pushes.
+#   5. Maintainer reviews the PR (human code + AI-generated tests).
+# =============================================================================
+
+name: AI Test Agent
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+
+jobs:
+  generate-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov
+
+      - name: Install pi
+        run: |
+          npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+
+      - name: Run AI agent to generate missing tests
+        env:
+          # Set the provider API key your agent uses.
+          # Change ANTHROPIC_API_KEY to match your provider.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          pi -p "
+            You are in a GitHub Actions CI runner. The current checkout has:
+
+            - src/    - Python source modules
+            - tests/  - pytest test files (some functions are covered, some are not)
+
+            The PR branch is \"${{ github.head_ref }}\" and the base is \"main\".
+
+            Follow these steps:
+
+            1. Run \"git diff origin/main...HEAD --stat\" to see what files changed.
+
+            2. Run \"python -m pytest tests/ --cov=src --cov-report=term-missing --tb=short -q 2>&1 || true\"
+               to identify functions missing test coverage.
+
+            3. Read each source file that has uncovered functions.
+
+            4. For each uncovered function, read the corresponding existing test file (if any)
+               to understand the project's test style, then write new pytest tests that cover:
+               - Normal cases
+               - Edge cases (empty input, zeros, negatives, etc.)
+               - Error cases (exceptions)
+
+            5. After writing all tests, run \"python -m pytest tests/ -v --tb=short -q\" to verify
+               they all pass. If any fail, fix them.
+
+            6. Configure git: git config user.name 'ai-test-agent[bot]'
+               and git config user.email 'ai-test-agent[bot]@users.noreply.github.com'
+
+            7. Run \"git add -A\" and \"git diff --staged --quiet\" to check for changes.
+               If there are staged changes, commit with message
+               'chore: add AI-generated unit tests for uncovered functions'
+               and push to origin HEAD:\"${{ github.head_ref }}\".
+          "
+
+      - name: Summary
+        run: |
+          echo "### AI Test Agent Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- PR: ${{ github.event.pull_request.html_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: \`${{ github.head_ref }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY

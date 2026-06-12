@@ -1,0 +1,104 @@
+# Hexlet AI Agent Unit Tests — Demo
+
+A small demonstration project that showcases **AI-agent-driven unit test generation** in a real-world GitHub workflow.
+
+## The Demo Flow
+
+```
+Developer                   Feature Branch                       PR → GitHub Action → AI Agent → Test Commit
+───────                     ──────────────                       ──────────────────────────────────────────
+  │                              │                                      │
+  │  Implement feature ─────────→│                                      │
+  │  (e.g., data_processor.py)   │                                      │
+  │                              │  Open Pull Request ──────────────────→│
+  │                              │                                      │
+  │                              │         AI agent analyses diff       │
+  │                              │         Identifies missing tests     │
+  │                              │         Generates pytest cases       │
+  │                              │         Commits tests back ─────────→│
+  │                              │                                      │
+  │                              │    Maintainer reviews PR             │
+  │                              │    (human code + AI tests)           │
+```
+
+1. **Developer** implements a feature on a `feature/*` branch.
+2. **Pull request** is opened against `main`.
+3. **GitHub Action** triggers the `AI Test Agent` workflow.
+4. **AI agent** inspects the diff, identifies functions without test coverage, and generates appropriate unit tests.
+5. Agent **commits the tests** back to the PR branch.
+6. **Maintainer** reviews the combined PR and decides to accept or reject.
+
+## Project Structure
+
+```
+.
+├── .github/workflows/ai-test-agent.yml   # GitHub Action workflow
+├── features/
+│   └── add-data-processor.md             # Feature specification
+├── src/
+│   ├── calculator.py                     # Calculator — partial test coverage
+│   ├── string_utils.py                   # String utilities — partial test coverage
+│   └── data_processor.py                 # NEW — no tests yet (intentional gap)
+├── tests/
+│   ├── test_calculator.py                # Tests for add, subtract, multiply
+│   ├── test_string_utils.py              # Tests for reverse, capitalize_words
+│   └── ...                               # AI agent should add missing tests here
+├── pyproject.toml
+└── README.md
+```
+
+## Intentional Test Gaps
+
+The following functions exist in `src/` but **lack unit tests** — the AI agent's job is to find and fill these gaps:
+
+| Module | Function | Covered? |
+|--------|----------|----------|
+| `calculator.py` | `add` | ✅ |
+| `calculator.py` | `subtract` | ✅ |
+| `calculator.py` | `multiply` | ✅ |
+| `calculator.py` | `divide` | ❌ |
+| `calculator.py` | `factorial` | ❌ |
+| `calculator.py` | `is_prime` | ❌ |
+| `string_utils.py` | `reverse` | ✅ |
+| `string_utils.py` | `capitalize_words` | ✅ |
+| `string_utils.py` | `is_palindrome` | ❌ |
+| `string_utils.py` | `count_vowels` | ❌ |
+| `data_processor.py` | `filter_by_key` | ❌ (whole module new) |
+| `data_processor.py` | `sort_by_key` | ❌ |
+| `data_processor.py` | `aggregate_by_key` | ❌ |
+| `data_processor.py` | `merge_records` | ❌ |
+
+## Running Locally
+
+```bash
+# Install with dev dependencies
+pip install -e ".[dev]"
+
+# Run existing tests
+pytest tests/ -v
+
+# Show missing coverage
+pytest tests/ --cov=src --cov-report=term-missing
+```
+
+## Customizing the AI Agent
+
+The workflow at `.github/workflows/ai-test-agent.yml` invokes **pi directly with `-p`** (non-interactive mode).
+The prompt instructs pi to:
+
+1. Diff the PR against `main` to see what changed.
+2. Run `pytest --cov=src` to find uncovered functions.
+3. Read source files and existing tests to learn the project style.
+4. Generate pytest tests covering normal cases, edge cases, and error cases.
+5. Verify the new tests pass.
+6. Commit and push back to the PR branch.
+
+### To adapt for your own agent
+
+- **Change the provider** — replace `ANTHROPIC_API_KEY` with `OPENAI_API_KEY`, `GEMINI_API_KEY`, etc.
+- **Tighten the prompt** — add project-specific conventions (e.g. "use `unittest` instead of pytest", "mock external APIs").
+- **Switch to a Docker image** — pre-install pi and deps to save ~30s per run.
+
+## Purpose
+
+This project is intended as a **living demo** to show how AI agents can be integrated into CI/CD pipelines to automatically improve test coverage. It's deliberately small so that every gap and every generated test can be manually inspected.
