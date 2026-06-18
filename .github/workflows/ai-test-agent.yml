@@ -60,7 +60,7 @@ jobs:
           # Change ANTHROPIC_API_KEY to match your provider.
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
-          opencode run --model big-pickle "
+          opencode run --model opencode/big-pickle "
             You are in a GitHub Actions CI runner. The current checkout has:
 
             - src/    - Python source modules
