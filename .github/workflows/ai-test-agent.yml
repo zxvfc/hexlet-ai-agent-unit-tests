@@ -52,7 +52,7 @@ jobs:
 
       - name: Install opencode
         run: |
-          npm install -g --ignore-scripts opencode-ai
+          npm install -g opencode-ai
 
       - name: Run AI agent to generate missing tests
         env:
