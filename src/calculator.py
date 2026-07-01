@@ -71,3 +71,23 @@ def is_prime(n: int) -> bool:
         if n % i == 0:
             return False
     return True
+
+
+def gcd(a: int, b: int) -> int:
+    """Return the greatest common divisor of a and b.
+
+    Args:
+        a: A non-negative integer.
+        b: A non-negative integer.
+
+    Returns:
+        The greatest common divisor of a and b.
+
+    Raises:
+        ValueError: If a or b is negative.
+    """
+    if a < 0 or b < 0:
+        raise ValueError("GCD is defined for non-negative integers")
+    while b:
+        a, b = b, a % b
+    return a
