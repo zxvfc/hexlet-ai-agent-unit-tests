@@ -55,10 +55,6 @@ jobs:
           npm install -g opencode-ai
 
       - name: Run AI agent to generate missing tests
-        env:
-          # Set the provider API key your agent uses.
-          # Change ANTHROPIC_API_KEY to match your provider.
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
           opencode run --model opencode/big-pickle "
             You are in a GitHub Actions CI runner. The current checkout has:
