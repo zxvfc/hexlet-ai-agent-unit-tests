@@ -2,20 +2,20 @@
 # AI Test Agent - Demo Workflow
 # =============================================================================
 #
-# Triggered on PRs to `main`. Runs the pi coding agent to:
+# Triggered on PRs to `main`. Runs the opencode agent to:
 #   1. Analyse the diff and identify code with no test coverage.
 #   2. Generate pytest tests for uncovered functions.
 #   3. Commit and push the generated tests back to the PR branch.
 #
 # Prerequisites:
-#   - Node.js (for installing pi via npm)
+#   - Node.js (for installing opencode via npm)
 #   - A provider API key in GitHub Secrets (e.g. ANTHROPIC_API_KEY)
 #
 # Demo flow:
 #   1. Developer pushes implementation to `feature/*` branch.
 #   2. Developer opens a PR against `main`.
 #   3. This workflow runs.
-#   4. pi analyses the diff, writes missing tests, commits & pushes.
+#   4. opencode analyses the diff, writes missing tests, commits & pushes.
 #   5. Maintainer reviews the PR (human code + AI-generated tests).
 # =============================================================================
 
@@ -50,17 +50,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest pytest-cov
 
-      - name: Install pi
+      - name: Install opencode
         run: |
-          npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+          npm install -g opencode-ai
 
       - name: Run AI agent to generate missing tests
-        env:
-          # Set the provider API key your agent uses.
-          # Change ANTHROPIC_API_KEY to match your provider.
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         run: |
-          pi --print --no-session --model big-pickle "
+          opencode run --model opencode/big-pickle "
             You are in a GitHub Actions CI runner. The current checkout has:
 
             - src/    - Python source modules
