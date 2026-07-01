@@ -6,7 +6,7 @@ The AI agent should detect these gaps and write tests for them.
 """
 
 import pytest
-from src.calculator import add, subtract, multiply
+from src.calculator import add, subtract, multiply, divide, factorial, is_prime
 
 
 class TestAdd:
@@ -42,3 +42,78 @@ class TestMultiply:
     def test_multiply_negative(self):
         assert multiply(-3, 4) == -12
         assert multiply(-3, -4) == 12
+
+
+class TestDivide:
+    def test_divide_positive(self):
+        assert divide(10, 2) == 5.0
+
+    def test_divide_fraction(self):
+        assert divide(1, 3) == pytest.approx(0.3333333)
+
+    def test_divide_by_one(self):
+        assert divide(7, 1) == 7.0
+
+    def test_divide_zero_numerator(self):
+        assert divide(0, 5) == 0.0
+
+    def test_divide_negative(self):
+        assert divide(-10, 2) == -5.0
+        assert divide(10, -2) == -5.0
+
+    def test_divide_by_zero_raises(self):
+        with pytest.raises(ZeroDivisionError, match="Cannot divide by zero"):
+            divide(5, 0)
+
+
+class TestFactorial:
+    def test_factorial_zero(self):
+        assert factorial(0) == 1
+
+    def test_factorial_one(self):
+        assert factorial(1) == 1
+
+    def test_factorial_small(self):
+        assert factorial(5) == 120
+
+    def test_factorial_large(self):
+        assert factorial(10) == 3628800
+
+    def test_factorial_negative_raises(self):
+        with pytest.raises(ValueError, match="Factorial is not defined for negative numbers"):
+            factorial(-1)
+
+    def test_factorial_negative_large_raises(self):
+        with pytest.raises(ValueError):
+            factorial(-100)
+
+
+class TestIsPrime:
+    def test_is_prime_two(self):
+        assert is_prime(2) is True
+
+    def test_is_prime_three(self):
+        assert is_prime(3) is True
+
+    def test_is_prime_large_prime(self):
+        assert is_prime(17) is True
+        assert is_prime(97) is True
+
+    def test_is_prime_even_composite(self):
+        assert is_prime(4) is False
+
+    def test_is_prime_odd_composite(self):
+        assert is_prime(9) is False
+        assert is_prime(15) is False
+
+    def test_is_prime_one_raises(self):
+        with pytest.raises(ValueError, match="Prime numbers are defined for integers >= 2"):
+            is_prime(1)
+
+    def test_is_prime_zero_raises(self):
+        with pytest.raises(ValueError):
+            is_prime(0)
+
+    def test_is_prime_negative_raises(self):
+        with pytest.raises(ValueError):
+            is_prime(-5)
