@@ -62,6 +62,10 @@ class TestRectangleArea:
     def test_area_float_values(self):
         assert rectangle_area(2.5, 4.0) == 10.0
 
+    def test_area_both_negative_raises(self):
+        with pytest.raises(ValueError):
+            rectangle_area(-1, -2)
+
 
 class TestRectanglePerimeter:
     def test_perimeter_positive(self):
@@ -102,3 +106,7 @@ class TestTriangleArea:
 
     def test_area_float(self):
         assert triangle_area(3.0, 2.5) == 3.75
+
+    def test_area_both_negative_raises(self):
+        with pytest.raises(ValueError):
+            triangle_area(-1, -2)

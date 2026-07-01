@@ -65,6 +65,12 @@ class TestDivide:
         with pytest.raises(ZeroDivisionError, match="Cannot divide by zero"):
             divide(5, 0)
 
+    def test_divide_negative_denominator(self):
+        assert divide(10, -2) == -5.0
+
+    def test_divide_large_numbers(self):
+        assert divide(1e9, 1e3) == 1e6
+
 
 class TestFactorial:
     def test_factorial_zero(self):

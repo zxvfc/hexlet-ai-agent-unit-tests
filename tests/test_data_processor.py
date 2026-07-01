@@ -33,6 +33,17 @@ class TestFilterByKey:
         ]
         assert filter_by_key(data, "x", 1) == [{"x": 1, "y": 2}, {"x": 1, "y": 3}]
 
+    def test_filter_mixed_missing_and_present_keys(self):
+        data = [
+            {"name": "Alice", "role": "admin"},
+            {"name": "Bob"},
+            {"name": "Charlie", "role": "admin"},
+        ]
+        assert filter_by_key(data, "role", "admin") == [
+            {"name": "Alice", "role": "admin"},
+            {"name": "Charlie", "role": "admin"},
+        ]
+
 
 class TestSortByKey:
     def test_sort_ascending(self):
@@ -51,6 +62,12 @@ class TestSortByKey:
     def test_sort_numeric(self):
         data = [{"val": 3}, {"val": 1}, {"val": 2}]
         assert sort_by_key(data, "val") == [{"val": 1}, {"val": 2}, {"val": 3}]
+
+    def test_sort_ties_preserve_order(self):
+        data = [{"name": "Alice", "group": 1}, {"name": "Bob", "group": 1}]
+        result = sort_by_key(data, "group")
+        assert result[0]["name"] == "Alice"
+        assert result[1]["name"] == "Bob"
 
     def test_sort_key_missing_raises(self):
         data = [{"a": 1}, {"b": 2}]
@@ -128,3 +145,15 @@ class TestMergeRecords:
             {"id": 3, "c": 3},
         ]
         assert merge_records(records, "id") == records
+
+    def test_merge_missing_key_in_some_records(self):
+        records = [
+            {"id": 1, "a": 1},
+            {"no_id": True, "b": 2},
+            {"id": 1, "c": 3},
+        ]
+        result = merge_records(records, "id")
+        assert result[0] == {"id": 1, "a": 1}
+        assert result[1] == {"no_id": True, "b": 2}
+        assert result[2] == {"id": 1, "c": 3}
+        assert len(result) == 3
