@@ -6,7 +6,7 @@ The AI agent should detect these gaps and write tests for them.
 """
 
 import pytest
-from src.calculator import add, subtract, multiply, divide, factorial, is_prime
+from src.calculator import add, subtract, multiply, divide, factorial, is_prime, gcd
 
 
 class TestAdd:
@@ -117,3 +117,39 @@ class TestIsPrime:
     def test_is_prime_negative_raises(self):
         with pytest.raises(ValueError):
             is_prime(-5)
+
+
+class TestGcd:
+    def test_gcd_normal(self):
+        assert gcd(12, 8) == 4
+        assert gcd(54, 24) == 6
+        assert gcd(17, 5) == 1
+
+    def test_gcd_equal_numbers(self):
+        assert gcd(7, 7) == 7
+        assert gcd(1, 1) == 1
+
+    def test_gcd_one_is_multiple(self):
+        assert gcd(12, 6) == 6
+
+    def test_gcd_with_zero(self):
+        assert gcd(0, 5) == 5
+        assert gcd(7, 0) == 7
+
+    def test_gcd_both_zero(self):
+        assert gcd(0, 0) == 0
+
+    def test_gcd_large_numbers(self):
+        assert gcd(123456, 7890) == 6
+
+    def test_gcd_negative_a_raises(self):
+        with pytest.raises(ValueError, match="GCD is defined for non-negative integers"):
+            gcd(-1, 5)
+
+    def test_gcd_negative_b_raises(self):
+        with pytest.raises(ValueError, match="GCD is defined for non-negative integers"):
+            gcd(5, -1)
+
+    def test_gcd_both_negative_raises(self):
+        with pytest.raises(ValueError):
+            gcd(-3, -9)
