@@ -48,31 +48,33 @@ Developer                   Feature Branch                       PR → GitHub A
 └── README.md
 ```
 
-## Intentional Test Gaps
+## Test Coverage
 
-The following functions exist in `src/` but **lack unit tests** — the AI agent's job is to find and fill these gaps:
+All functions in `src/` are covered by unit tests:
 
 | Module | Function | Covered? |
 |--------|----------|----------|
 | `calculator.py` | `add` | ✅ |
 | `calculator.py` | `subtract` | ✅ |
 | `calculator.py` | `multiply` | ✅ |
-| `calculator.py` | `divide` | ❌ |
-| `calculator.py` | `factorial` | ❌ |
-| `calculator.py` | `is_prime` | ❌ |
+| `calculator.py` | `divide` | ✅ |
+| `calculator.py` | `factorial` | ✅ |
+| `calculator.py` | `is_prime` | ✅ |
+| `calculator.py` | `gcd` | ✅ |
+| `calculator.py` | `lcm` | ✅ |
 | `string_utils.py` | `reverse` | ✅ |
 | `string_utils.py` | `capitalize_words` | ✅ |
-| `string_utils.py` | `is_palindrome` | ❌ |
-| `string_utils.py` | `count_vowels` | ❌ |
-| `data_processor.py` | `filter_by_key` | ❌ (whole module new) |
-| `data_processor.py` | `sort_by_key` | ❌ |
-| `data_processor.py` | `aggregate_by_key` | ❌ |
-| `data_processor.py` | `merge_records` | ❌ |
-| `geometry.py` | `circle_area` | ❌ (whole module new) |
-| `geometry.py` | `circle_circumference` | ❌ |
-| `geometry.py` | `rectangle_area` | ❌ |
-| `geometry.py` | `rectangle_perimeter` | ❌ |
-| `geometry.py` | `triangle_area` | ❌ |
+| `string_utils.py` | `is_palindrome` | ✅ |
+| `string_utils.py` | `count_vowels` | ✅ |
+| `data_processor.py` | `filter_by_key` | ✅ |
+| `data_processor.py` | `sort_by_key` | ✅ |
+| `data_processor.py` | `aggregate_by_key` | ✅ |
+| `data_processor.py` | `merge_records` | ✅ |
+| `geometry.py` | `circle_area` | ✅ |
+| `geometry.py` | `circle_circumference` | ✅ |
+| `geometry.py` | `rectangle_area` | ✅ |
+| `geometry.py` | `rectangle_perimeter` | ✅ |
+| `geometry.py` | `triangle_area` | ✅ |
 
 ## Running Locally
 
