@@ -71,3 +71,43 @@ def is_prime(n: int) -> bool:
         if n % i == 0:
             return False
     return True
+
+
+def gcd(a: int, b: int) -> int:
+    """Return the greatest common divisor of a and b.
+
+    Args:
+        a: An integer.
+        b: An integer.
+
+    Returns:
+        The GCD of a and b.
+
+    Raises:
+        ValueError: If a or b is negative.
+    """
+    if a < 0 or b < 0:
+        raise ValueError("GCD is not defined for negative numbers")
+    while b:
+        a, b = b, a % b
+    return a
+
+
+def lcm(a: int, b: int) -> int:
+    """Return the least common multiple of a and b.
+
+    Args:
+        a: A non-negative integer.
+        b: A non-negative integer.
+
+    Returns:
+        The LCM of a and b.
+
+    Raises:
+        ValueError: If a or b is negative.
+    """
+    if a < 0 or b < 0:
+        raise ValueError("LCM is not defined for negative numbers")
+    if a == 0 or b == 0:
+        return 0
+    return (a * b) // gcd(a, b)
