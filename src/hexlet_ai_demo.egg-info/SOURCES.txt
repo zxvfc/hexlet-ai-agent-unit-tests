@@ -3,6 +3,7 @@ pyproject.toml
 src/__init__.py
 src/calculator.py
 src/data_processor.py
+src/geometry.py
 src/string_utils.py
 src/hexlet_ai_demo.egg-info/PKG-INFO
 src/hexlet_ai_demo.egg-info/SOURCES.txt
@@ -10,4 +11,6 @@ src/hexlet_ai_demo.egg-info/dependency_links.txt
 src/hexlet_ai_demo.egg-info/requires.txt
 src/hexlet_ai_demo.egg-info/top_level.txt
 tests/test_calculator.py
+tests/test_data_processor.py
+tests/test_geometry.py
 tests/test_string_utils.py

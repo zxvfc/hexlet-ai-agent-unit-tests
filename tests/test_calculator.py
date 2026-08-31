@@ -6,7 +6,7 @@ The AI agent should detect these gaps and write tests for them.
 """
 
 import pytest
-from src.calculator import add, subtract, multiply, divide, factorial, is_prime
+from src.calculator import add, subtract, multiply, divide, factorial, is_prime, gcd, lcm
 
 
 class TestAdd:
@@ -117,3 +117,51 @@ class TestIsPrime:
     def test_is_prime_negative_raises(self):
         with pytest.raises(ValueError):
             is_prime(-5)
+
+
+class TestGcd:
+    def test_gcd_coprime(self):
+        assert gcd(8, 15) == 1
+
+    def test_gcd_shared_factor(self):
+        assert gcd(12, 8) == 4
+
+    def test_gcd_one_zero(self):
+        assert gcd(0, 5) == 5
+        assert gcd(7, 0) == 7
+
+    def test_gcd_negative_raises(self):
+        with pytest.raises(ValueError, match="GCD is not defined for negative numbers"):
+            gcd(-4, 6)
+
+
+class TestLcm:
+    def test_lcm_coprime(self):
+        assert lcm(4, 7) == 28
+
+    def test_lcm_shared_factor(self):
+        assert lcm(4, 6) == 12
+
+    def test_lcm_equal_values(self):
+        assert lcm(5, 5) == 5
+
+    def test_lcm_zero(self):
+        assert lcm(0, 5) == 0
+        assert lcm(7, 0) == 0
+        assert lcm(0, 0) == 0
+
+    def test_lcm_one(self):
+        assert lcm(1, 10) == 10
+        assert lcm(10, 1) == 10
+
+    def test_lcm_large(self):
+        assert lcm(12, 18) == 36
+        assert lcm(21, 14) == 42
+
+    def test_lcm_negative_raises(self):
+        with pytest.raises(ValueError, match="LCM is not defined for negative numbers"):
+            lcm(-4, 6)
+
+    def test_lcm_negative_second_raises(self):
+        with pytest.raises(ValueError):
+            lcm(4, -6)
