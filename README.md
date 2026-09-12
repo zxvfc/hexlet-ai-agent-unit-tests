@@ -60,6 +60,7 @@ The following functions exist in `src/` but **lack unit tests** — the AI agent
 | `calculator.py` | `divide` | ❌ |
 | `calculator.py` | `factorial` | ❌ |
 | `calculator.py` | `is_prime` | ❌ |
+| `calculator.py` | `gcd` | ❌ |
 | `string_utils.py` | `reverse` | ✅ |
 | `string_utils.py` | `capitalize_words` | ✅ |
 | `string_utils.py` | `is_palindrome` | ❌ |
